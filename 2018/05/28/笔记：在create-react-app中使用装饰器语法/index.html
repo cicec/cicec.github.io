@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="记录一些前端相关的学习经验">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Clancy Song">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="笔记：在create-react-app中使用装饰器语法"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="记录一些前端相关的学习经验" />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Clancy&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>笔记：在create-react-app中使用装饰器语法 - Clancy&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://hexo.io/logo.svg" alt="Clancy's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            笔记：在create-react-app中使用装饰器语法
+            
+          </h1>
+          <p class="posted-on">
+          2018-05-28
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端相关/" rel="tag">
+                  前端相关
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <p>在使用mobx时可以使用装饰器语法来简化代码以及便于阅读。然而装饰器语法是不被babel默认支持的，如果直接对这种语法进行转义的话就会报语法错误。这时就需要手动启用装饰器。</p>
+<p>首先在项目中安装依赖：</p>
+<blockquote>
+<p>npm i –save-dev babel-plugin-transform-decorators-legacy</p>
+</blockquote>
+<p>接着在.babelrc中启用：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [<span class="string">"es2015"</span>, <span class="string">"stage-1"</span>],</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"transform-decorators-legacy"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样装饰器就被启用了，代码也能够被正确地转义。</p>
+<p>但很多时候我们使用create-react-app来创建项目，而create-react-app中的配置文件是不能直接修改的，为了修改babel的配置，可以使用 <code>npm run eject</code> 命令来弹出配置，这样就能够在package.json文件中找到babel的配置选项：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">"babel": &#123;</span><br><span class="line">    "presets": [</span><br><span class="line">        <span class="string">"react-app"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>然后像上面一样正常添加配置就好了：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"babel": &#123;</span><br><span class="line">    "presets": [</span><br><span class="line">        <span class="string">"react-app"</span></span><br><span class="line">    ],</span><br><span class="line">    "plugins": [</span><br><span class="line">        <span class="string">"transform-decorators-legacy"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>当然如果不想这样大动干戈地弹出全部配置，也可以直接在node_mudules目录中手动找到对应的配置文件单独进行修改。</p>
+<p>这里直接进入 <code>node_modules/babel-preset-react-app/index.js</code> 目录中，找到plugins选项，直接添加装饰器支持就好了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plugins = [</span><br><span class="line">    ...</span><br><span class="line">+   <span class="built_in">require</span>.resolve(<span class="string">'babel-plugin-transform-decorators-legacy'</span>),</span><br><span class="line">    <span class="built_in">require</span>.resolve(<span class="string">'babel-plugin-transform-es2015-destructuring'</span>),</span><br><span class="line">    <span class="comment">// class &#123; handleClick = () =&gt; &#123; &#125; &#125;</span></span><br><span class="line">    <span class="built_in">require</span>.resolve(<span class="string">'babel-plugin-transform-class-properties'</span>),</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="Tips："><a href="#Tips：" class="headerlink" title="Tips："></a>Tips：</h4><p>在VSCode中直接使用装饰器语法会被提示错误，虽然并没有什么影响，但是看着也还是会不爽。那么只需要在设置中覆盖如下配置（推荐在工作区设置），错误就会消失了。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"javascript.implicitProjectConfig.experimentalDecorators"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2018/04/04/TCP协议三次握手和四次挥手/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          记录一些前端相关的学习经验
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/clancysong" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Clancy's Blog &copy; 2018</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>

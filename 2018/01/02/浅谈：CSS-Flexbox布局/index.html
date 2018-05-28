@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="记录一些前端相关的学习经验">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Clancy Song">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="浅谈：CSS-Flexbox布局"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="记录一些前端相关的学习经验" />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Clancy&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>浅谈：CSS-Flexbox布局 - Clancy&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://hexo.io/logo.svg" alt="Clancy's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            浅谈：CSS-Flexbox布局
+            
+          </h1>
+          <p class="posted-on">
+          2018-01-02
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端相关/" rel="tag">
+                  前端相关
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <p><img src="http://p4nfph69y.bkt.clouddn.com/mur6s.jpg" alt="cover.jpg"></p>
+<h2 id="前戏"><a href="#前戏" class="headerlink" title="前戏"></a>前戏</h2><p>在正式开始接触弹性盒子布局之前，我们先稍微写一点代码看看效果。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#ffaaaa</span>;</span><br><span class="line">    <span class="attribute">margin</span>: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/gf42d.png" alt="flexbox居中显示.png"></p>
+<p>在这里，我们创建了一个容器和其内部的方块，并将容器display属性设置为flex。可以看到，对容器内的方块，我们只是添加了 <strong>margin: auto;</strong> 这一行代码，便实现了其相对容器水平与垂直上的完全居中。也就是说，flexbox首先便解决了css一直以来在垂直居中上的痛点。</p>
+<h2 id="Flexbox简介"><a href="#Flexbox简介" class="headerlink" title="Flexbox简介"></a>Flexbox简介</h2><p>先丢一张MDN上面关于弹性盒布局的介绍图</p>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/pwn51.png" alt=""></p>
+<p>没看懂的话没有关系，这里是<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes" target="_blank" rel="noopener">MDN的官方文档</a>，认真看。<br>以上</p>
+<hr>
+<p>。。。<br>啊不是，没看懂的话接着往下看。</p>
+<h2 id="Flexbox示例"><a href="#Flexbox示例" class="headerlink" title="Flexbox示例"></a>Flexbox示例</h2><p>要使用弹性盒布局，首先便要定义一个弹性容器（flex container）。弹性容器可以通过设置display的值为flex或inline-flex定义，其中flex会被外界视为块级元素，而inline-flex则会被视为行内元素。处在弹性容器内部的元素，就被视为弹性项目（flex item）.</p>
+<h4 id="flex-container"><a href="#flex-container" class="headerlink" title="flex container"></a>flex container</h4><p>在上面的例子中，container元素已经被添加了 <strong>display: flex;</strong> 属性，也就是说，container元素已经作为一个弹性容器存在，而box元素就是一个弹性项目。<br>基于上面的例子，我们做一些修改。</p>
+<ul>
+<li>将box的margin属性删掉，这里暂时用不到它了。</li>
+<li>将原本的1个box元素复制为6个.</li>
+</ul>
+<p>刷新页面，我们会发现6个box元素挤在了一起，这并不弹性。</p>
+<p>在这里，只需要为弹性容器添加一条属性</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">justify-content</span>: space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新页面，6个box便已经均匀地分布在这一行上了。</p>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/jpdv9.png" alt="justify-content.png"></p>
+<p>在介绍justify-content属性之前，我们先了解一下主轴的概念：</p>
+<p>主轴就是弹性项目在弹性容器的排布方向，默认是横向从左到右的，也就是说，在向弹性容器中塞元素的时候，默认是从左到右一个一个放好的。 当然，主轴的方向是可变的，可以是从右向左，甚至可以是从上到下的。主轴的方向由属性flex-direction控制。</p>
+<blockquote>
+<p>flex-direction: row | row-reverse | column | column-reverse</p>
+</blockquote>
+<p>而justify-content属性控制的便是弹性项目在主轴上的对齐方式，之前6个box挤在了一起，是因为该属性默认是向主轴的起点对齐。而后我们将justify-content设置为space-around，作用就是使主轴上的弹性项目均匀分布。</p>
+<blockquote>
+<p>justify-content: flex-start | flex-end | center | space-between | space-around;</p>
+</blockquote>
+<p>接下来我们向容器内再加一些方块。将原来的6个box再复制一遍，现在容器内有12个方块了。刷新页面，我们发现这些方块又连成了一片，甚至还超出了容器的边界，这并不弹性。</p>
+<p>于是我们需要为弹性容器再添加一条属性</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">justify-content</span>: space-around;</span><br><span class="line">    <span class="attribute">flex-wrap</span>: wrap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#ffaaaa</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了便于观察，我们为box添加一点外边距。再次刷新，可以看到多出来的方块排列到了下一行，而且当我们调整浏览器窗口大小时，方块们会自动排列整齐。</p>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/fjdw3.png" alt="flex-wrap.png"></p>
+<p>在这里我们需要了解关于侧轴的概念：</p>
+<p>侧轴是定义弹性容器内是否以多行显示，以及多行的排布方向。侧轴的方向与主轴是垂直的，如果主轴是横向的，那么侧轴就是纵向的，反之亦然。侧轴由属性flex-wrap控制，默认为单行显示，也就是不换行。（主轴与侧轴的属性可以简写为flex-flow。例如 <strong>flex-flow: row wrap;</strong>）。</p>
+<blockquote>
+<p>flex-wrap: nowrap | wrap | wrap-reverse</p>
+</blockquote>
+<p>侧轴与主轴一样可以定义行在侧轴线的对齐方式，由属性align-content控制。</p>
+<blockquote>
+<p>align-content: flex-start | flex-end | center | space-between | space-around | stretch;</p>
+</blockquote>
+<p>接着我们修改几个方块的高度，让它们看起来不那么一样。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(1)</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(2)</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">350px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(1)</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">250px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(4)</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到一行的高度是由这一行内最高的元素决定的，那么怎样让元素相对这一行的高度垂直居中呢。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">justify-content</span>: space-around;</span><br><span class="line">    <span class="attribute">flex-wrap</span>: wrap;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/agq1z.png" alt="align-items.png"></p>
+<p>这样，就控制了每一行的元素都以该行的中间位置对齐。而align-items属性控制的便是行内项目的对齐方式。</p>
+<blockquote>
+<p>align-items: flex-start | flex-end | center | baseline | stretch</p>
+</blockquote>
+<h4 id="flex-items"><a href="#flex-items" class="headerlink" title="flex items"></a>flex items</h4><p>以上介绍的都是为弹性容器定义的属性，而我们同样可以为每个弹性容器分别定义不同的属性。</p>
+<p>order：控制弹性项目在弹性容器中布局的顺序。例如我们将原本的最后一个方块的order值设置为-1，因为其他方块的order均为默认值0，则最后一个方块将会排在第一位。</p>
+<blockquote>
+<p>order: <integer> </integer></p>
+</blockquote>
+<p>align-self：为单独的伸缩项目定义在行内的对齐方式（对应align-items）</p>
+<blockquote>
+<p>align-self: auto | flex-start | flex-end | center | baseline | stretch;</p>
+</blockquote>
+<p>最后的三个属性都与弹性项目本身的缩放有关，放在一起来说。</p>
+<p>我们将上面的示例再稍微改动一下。首先将方块们都删掉，留下四个就可以。然后为了便于观察，为这四个方块设置不同的背景颜色。最后分别为他们添加flex-grow属性，并设置不同的值，例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(1)</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#ffaaaa</span>;</span><br><span class="line">    <span class="attribute">flex-grow</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(2)</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#f2ffaa</span>;</span><br><span class="line">    <span class="attribute">flex-grow</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(3)</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#aaffc4</span>;</span><br><span class="line">    <span class="attribute">flex-grow</span>: <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span><span class="selector-pseudo">:nth-child(4)</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#c8aaff</span>;</span><br><span class="line">    <span class="attribute">flex-grow</span>: <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新页面，我们发现四个方块之间没有了间距，并且似乎都宽了不少。</p>
+<p><img src="http://p4nfph69y.bkt.clouddn.com/agqxb.png" alt="flex-grow.png"></p>
+<p>不难看出，flex-grow属性定义的便是弹性项目的扩展能力。但需要注意的是，flex-grow与其他方块的值是成比例的。例如上述示例中，四个方块的属性值分别为2、1、4、3，总和为10，则方块1扩展能力就是2/10，它能占用的剩余空间就是1/5的大小。而如果只有一个方块定义了flex-grow属性，因为其他方块值均为默认值0（不扩展），那么无论这个方块的flex-grow属性为多少，它都将得到全部的剩余空间。</p>
+<blockquote>
+<p>flex-grow: <number>; /<em> default 0 </em>/</number></p>
+</blockquote>
+<p>与之相对应的，就是flex-shrink属性。该属性定义弹性项目的收缩能力。在容器缩小时随着容器等比例缩小。</p>
+<blockquote>
+<p>flex-shrink: <number>; /<em> default 1 </em>/</number></p>
+</blockquote>
+<p>flex-basis：这个属性定义弹性项目在主轴上所占的长度。很容易理解，与宽度类似，但与宽度不同的是，flex-basis是在<strong>主轴</strong>方向上的长度，也就是说，如果主轴是纵向的，那么它定义的就是高度（可以这样理解）。</p>
+<p>flex-grow, flex-shrink, flex-basis可以简写为flex属性，例如 <strong>flex: 2 2 20%;</strong> </p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>关于flexbox布局各属性的详细信息如果仍有疑问请手动查阅<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout" target="_blank" rel="noopener">MDN文档</a></p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2018/01/25/浅谈：CSS-Grid布局/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          记录一些前端相关的学习经验
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/clancysong" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Clancy's Blog &copy; 2018</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>

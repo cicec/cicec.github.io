@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="记录一些前端相关的学习经验">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Clancy Song">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="实现AJAX以及常见的跨域处理"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="记录一些前端相关的学习经验" />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Clancy&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>实现AJAX以及常见的跨域处理 - Clancy&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://hexo.io/logo.svg" alt="Clancy's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            实现AJAX以及常见的跨域处理
+            
+          </h1>
+          <p class="posted-on">
+          2018-03-11
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端相关/" rel="tag">
+                  前端相关
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <h2 id="前戏"><a href="#前戏" class="headerlink" title="前戏"></a>前戏</h2><ul>
+<li>实现一个jQuery中的ajax函数。</li>
+<li>简单介绍常见的跨域方法。</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="实现AJAX"><a href="#实现AJAX" class="headerlink" title="实现AJAX"></a>实现AJAX</h3><p>AJAX，翻译为中文叫做异步JavaScript和XML。然而这个名字反而会令人困惑，因此可以直接将AJAX理解为用JavaScript发请求。相较于传统的HTML发请求每次请求后都需要刷新整个页面，使用JavaScript发请求就可以实现请求后只对局部页面进行刷新，这样就能做到从前完全无法实现的功能，也让网页看起来更像一个程序了。</p>
+<p>要使用AJAX发送请求，就需要创建一个XMLHttpRequest对象，这个对象为客户端提供了在客户端和服务器之间传输数据的功能：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="keyword">new</span> XMLHttpRequest()</span><br></pre></td></tr></table></figure>
+<p>之后需要配置这个对象的请求方式和路径，这里要使用XMLHttpRequest对象的open方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.open(<span class="string">'post'</span>, <span class="string">'/login'</span>)</span><br></pre></td></tr></table></figure>
+<p>如果想要添加或自行设置请求头，可以使用serHeader方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.setRequestHeader(<span class="string">'haha'</span>, <span class="string">'haha'</span>)</span><br></pre></td></tr></table></figure>
+<p>接下来就可以发送请求了，使用send方法，可以传递一个参数作为请求的内容也就是第四部分：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.send(<span class="string">'username=cc&amp;password=000'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样一个请求就已经发送出去了，当然只是这样的话并不能知道请求是否成功，以及请求什么时候完成，所以需要对XMLHttpRequest对象的状态变化进行监听（XMLHttpRequest对象有0-4共5种状态，其中状态为4时表示请求已经完成）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">request.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (request.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (request.status &gt;= <span class="number">200</span> &amp;&amp; request.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(request.responseText)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request &gt;= <span class="number">400</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(request)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里监听当XMLHttpRequest对象的状态为4时，判断HTTP状态码是否在200-299之间，如果是则表示请求成功，否则请求失败。其中XMLHttpRequest对象的responseText属性的值就是响应的结果也就是第四部分。这样请求的结果就获取到了，并且可以使用结果进行相应的操作。</p>
+<p>这样一个完整的请求就完成了，贴一下完整代码（）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">request.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (request.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (request.status &gt;= <span class="number">200</span> &amp;&amp; request.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(request.responseText)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request &gt;= <span class="number">400</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(request)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">request.open(<span class="string">'post'</span>, <span class="string">'/login'</span>)</span><br><span class="line">request.setRequestHeader(<span class="string">'haha'</span>, <span class="string">'haha'</span>)</span><br><span class="line">request.send(<span class="string">'username=cc&amp;password=000'</span>)</span><br></pre></td></tr></table></figure>
+<p>那么要将这些操作封装成函数，只需要将其中需要自定义的部分作为参数传入就好了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ajax = <span class="function">(<span class="params">url, method, body, headers, success, fail</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> request = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">    request.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (request.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (request.status &gt;= <span class="number">200</span> &amp;&amp; request.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">                success(request.responseText)</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request &gt;= <span class="number">400</span>) &#123;</span><br><span class="line">                fail(request)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    request.open(method, url)</span><br><span class="line">    <span class="built_in">Object</span>.keys(headers).forEach(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        request.setRequestHeader(key, headers[key])</span><br><span class="line">    &#125;)</span><br><span class="line">    request.send(body)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样看起来还不错，但还有些问题。首先每一个参数都是必传的，即使不想传递这个参数也需要传递一个null来占位，否则参数就会出现错误。为了解决这个问题可以将所有参数放到一个对象中一起传递进去。其次可以使用Promise对象来调用回调函数，来解决只能传递一个回调函数的问题：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ajax = <span class="function">(<span class="params">&#123; url, method, body, headers &#125;</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> request = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">    request.open(method, url)</span><br><span class="line">    <span class="built_in">Object</span>.keys(headers).forEach(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        request.setRequestHeader(key, headers[key])</span><br><span class="line">    &#125;)</span><br><span class="line">    request.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (request.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (request.status &gt;= <span class="number">200</span> &amp;&amp; request.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">                resolve(request.responseText)</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request &gt;= <span class="number">400</span>) &#123;</span><br><span class="line">                reject(request)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    request.send(body)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>OK，到这里这个ajax函数就基本完成了。</p>
+<h3 id="跨域处理"><a href="#跨域处理" class="headerlink" title="跨域处理"></a>跨域处理</h3><p>跨域的一种方法是使用jsonp来发送请求，利用标签不受同源策略限制的特点来实现跨域请求。具体实现可以查看之前的文章 <a href="http://clancy.me/2018/03/04/%E7%AE%80%E5%8D%95%E5%9C%B0%E7%90%86%E8%A7%A3JSONP%E7%9A%84%E5%AE%9A%E4%B9%89%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">简单地理解JSONP的定义及其实现</a></p>
+<p>另一种方法便是使用CORS进行跨域，使用的方法十分简单，只需要在后端添加响应头Access-Control-Allow-Origin，并将值设置为请求的网站地址，即可实现跨域：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setHeader(<span class="string">'Access-Control-Allow-Origin'</span>, <span class="string">'http://demo.com'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>没有结语了呀。。</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2018/03/13/简单理解JavaScript异步与回调/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2018/03/04/简单理解JSONP的定义及其实现/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          记录一些前端相关的学习经验
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/clancysong" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Clancy's Blog &copy; 2018</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>

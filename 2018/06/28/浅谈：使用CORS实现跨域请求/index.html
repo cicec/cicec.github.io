@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="记录一些前端相关的学习经验">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Clancy Song">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="浅谈：使用CORS实现跨域请求"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="记录一些前端相关的学习经验" />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Clancy&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>浅谈：使用CORS实现跨域请求 - Clancy&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://hexo.io/logo.svg" alt="Clancy's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            浅谈：使用CORS实现跨域请求
+            
+          </h1>
+          <p class="posted-on">
+          2018-06-28
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端相关/" rel="tag">
+                  前端相关
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <h2 id="前戏"><a href="#前戏" class="headerlink" title="前戏"></a>前戏</h2><ul>
+<li>之前写博客的时候还提到过CORS，可是没有认真研究过。。。</li>
+<li>正好今天踩坑了，就好好记录一下。</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h3><p>CORS（跨域资源共享），是一个针对跨域HTTP请求制定的标准。解决了以往 XMLHttpRequest 请求只能同源访问的限制。</p>
+<p>要使用CORS，需要浏览器和服务器同时支持。也就是说，需要服务器返回响应时额外添加响应头，使CORS生效。</p>
+<p>而浏览器端的CORS由浏览器自己完成，当浏览器发现请求指向不同源的地址时，就会自动添加CORS所必要的信息。</p>
+<p>浏览器会根据请求类型的不同将请求分为两类：简单请求和非简单请求。判断的规则如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 请求方法是以下三种方法之一：</span><br><span class="line">  HEAD</span><br><span class="line">  GET</span><br><span class="line">  POST</span><br><span class="line">2. HTTP的头信息不超出以下几种字段：</span><br><span class="line">  Accept</span><br><span class="line">  Accept-Language</span><br><span class="line">  Content-Language</span><br><span class="line">  Last-Event-ID</span><br><span class="line">  Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</span><br></pre></td></tr></table></figure>
+<p>满足以上两个条件，那么浏览器就视此次请求为简单请求。即直接在这次请求的请求头中添加一个 Origin 字段，内容为请求方的域名信息。</p>
+<p>请求信息：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/signin</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: localhost:8080</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Content-Length</span>: 25</span><br><span class="line"><span class="attribute">Origin</span>: http://localhost:3000</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36</span><br><span class="line"><span class="attribute">Content-Type</span>: application/x-www-form-urlencoded; charset=utf-8</span><br><span class="line"><span class="attribute">Accept</span>: */*</span><br><span class="line"><span class="attribute">Referer</span>: http://localhost:3000/</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate, br</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh,en;q=0.9,ja;q=0.8</span><br></pre></td></tr></table></figure>
+<p>那么服务器收到请求后，只需要告知浏览器是否允许 Origin 字段指定的域名进行请求。于是就要在响应信息中添加 Access-Control-Allow-Origin 字段，内容为允许请求的域名（或直接设置为*，表示允许任意域名请求）。例如：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Access-Control-Allow-Origin</span>: http://localhost:3000</span><br></pre></td></tr></table></figure>
+<p>除了Access-Control-Allow-Origin，还有CORS还提供了几个可选的字段：</p>
+<ul>
+<li><p>Access-Control-Allow-Credentials：表示是否允许发送Cookie，默认不允许，可设置为true允许发送。</p>
+</li>
+<li><p>Access-Control-Expose-Headers：用于设置浏览器接收到响应时可以拿到的响应头信息。默认可以拿到 Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma 六个基本字段。</p>
+</li>
+</ul>
+<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><p>那么在很多时候，只使用简单请求提供的几个可选项是不够的。例如当浏览器想向服务器提交一段json格式的数据，即需要将 Content-Type 字段设置为 application/json 时，这个请求就会被浏览器判定为非简单请求。这时浏览器不会直接发送原请求，而是会首先发送一个 OPTIONS 类型的预检请求，用于判断原请求是否被允许。请求信息如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">OPTIONS</span> <span class="string">/signin</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: localhost:8080</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Access-Control-Request-Method</span>: POST</span><br><span class="line"><span class="attribute">Origin</span>: http://localhost:3000</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36</span><br><span class="line"><span class="attribute">Access-Control-Request-Headers</span>: content-type</span><br><span class="line"><span class="attribute">Accept</span>: */*</span><br><span class="line"><span class="attribute">Referer</span>: http://localhost:3000/</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate, br</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh,en;q=0.9,ja;q=0.8</span><br></pre></td></tr></table></figure>
+<p>这段请求信息包含着两个字段：Access-Control-Request-Method 和 Access-Control-Request-Headers。分别代表此次原请求的方式和请求指定的头信息。而服务器则需要返回允许请求的方式和可携带的请求头，通过 Access-Control-Allow-Methods 和 Access-Control-Allow-Headers 字段指定。</p>
+<p>这里以node.js（express）为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">router.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    res.header(<span class="string">'Access-Control-Allow-Origin'</span>, <span class="string">'*'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (req.method === <span class="string">'OPTIONS'</span>) &#123;</span><br><span class="line">        res.header(<span class="string">'Access-Control-Allow-Methods'</span>, <span class="string">'GET, POST'</span>)</span><br><span class="line">        res.header(<span class="string">'Access-Control-Allow-Headers'</span>, <span class="string">'Content-Type'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    next()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>其中 Access-Control-Allow-Origin 字段是每次响应都必须要包含的。</p>
+<p>除了上面这3个字段，非简单请求还有着两个可选的字段：</p>
+<ul>
+<li><p>Access-Control-Allow-Credentials：与上文相同，表示是否允许发送Cookie。</p>
+</li>
+<li><p>Access-Control-Max-Age：用于指定本次预检请求的有效期，以秒为单位。</p>
+</li>
+</ul>
+<p>当浏览器接收到本次预检请求的响应结果后，就会判断服务器是否允许这次请求。若允许，就直接再次发送原请求并接收响应结果；若不允许，则会在控制台输出错误信息。</p>
+<p>请求成功后，在上一次预检请求的有效期内，都不需要再次发送预检请求了，而是直接被当做简单请求来处理。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>参考文档：</p>
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="noopener">跨域资源共享 CORS 详解</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">HTTP访问控制（CORS）</a></li>
+</ul>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2018/06/26/简单理解Promise对象的含义及用法/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          记录一些前端相关的学习经验
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/clancysong" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Clancy's Blog &copy; 2018</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>
